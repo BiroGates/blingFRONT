@@ -1,6 +1,6 @@
 
-
-import { useState } from 'react';
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 import './index.css'
 
 
@@ -8,20 +8,70 @@ import './index.css'
 export default function AddOrder() {
     const [orders, setOrders] = useState([]);
     const [value, setValue] = useState('');
-    
-    const handleEnter = (e) => {
-        console.log(e);
-        if (e.key === 'Enter') {
-            pushToOrders();
-            console.log("Teste");
-        }
-    }
+
+    const [systemAToken, setSystemAToken] = useState();
+    const [systemBToken, setSystemBToken] = useState();
+    const [systemCToken, setSystemCToken] = useState();
+
+    const[de, setDe] = useState();
+    const[para, setPara] = useState();
 
     const pushToOrders = (e) => {
         setOrders([...orders, value]);
         setValue('')
     };
     
+    const getSystemTokens = () => {
+        setSystemAToken(Cookies.get('SYSA'));
+        setSystemBToken(Cookies.get('SYSB'));
+        setSystemCToken(Cookies.get());
+    }
+
+    const handleDe = (sys, e) => {
+
+        if(sys === "SYSA" && e.target.checked) {
+            console.log(de, 'aaaaaaaaa');
+            setDe(systemAToken);
+        }else {
+            setDe('');
+        }
+        
+        if(sys === "SYSB" && e.target.checked) {
+            setDe(systemBToken);
+        }else {
+            setDe('');
+        }
+        
+        
+        // if(sys === "SYSA") {
+        //     setDe(systemAToken);
+        // }
+    }
+    
+    const handlePara = (sys, e) => {
+        if(sys === "SYSA" && e.target.checked) {
+            console.log(para);
+            setPara(systemAToken);
+        }else {
+            console.log('gone throuy');
+            setPara('');
+        }
+        
+        if(sys === "SYSB" && e.target.checked) {
+            setPara(systemBToken);
+        }else {
+            setPara('');
+        }
+        
+        // if(sys === "SYSA") {
+        //     setDe(systemAToken);
+        // }
+    }
+
+    useEffect(() => {
+        getSystemTokens()
+    }, []);
+
     return (
         <div className="order-main">
             <div className="upper-order">
@@ -35,7 +85,7 @@ export default function AddOrder() {
                         })}
                     </div>
                     <div className="order-footer">
-                        <input className='order-input' value={value} onKeyDown={handleEnter} onChange={(e) => setValue(e.target.value)} />
+                        <input className='order-input' value={value} onChange={(e) => setValue(e.target.value)} />
                         <div className='order-btn' onClick={() => pushToOrders()}>ADICIONAR</div>
                     </div>
                 </div>
@@ -48,11 +98,11 @@ export default function AddOrder() {
                             <div className='systems'>
                                 <div className='system-wraper'>
                                     <span className='system-icon'>SYSA</span>
-                                    <input type="checkbox" />
+                                    <input onClick={(e) => handleDe('SYSA', e)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input type="checkbox" />
+                                    <input onClick={(e) => handleDe('SYSB', e)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input type="checkbox" />
+                                    <input onClick={(e) => handleDe('SYSC', e)} type="checkbox" />
                                 </div>
                             </div>
                         </div>
@@ -62,11 +112,11 @@ export default function AddOrder() {
                             <div className='systems'>
                                 <div className='system-wraper'>
                                     <span className='system-icon'>SYSA</span>
-                                    <input type="checkbox" />
+                                    <input onClick={(e) => handlePara('SYSA', e)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input type="checkbox" />
+                                    <input onClick={(e) => handlePara('SYSB', e)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input type="checkbox" />
+                                    <input onClick={(e) => handlePara('SYSC', e)} type="checkbox" />
                                 </div>
                             </div>
                         </div>
