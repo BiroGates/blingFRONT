@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import './index.css'
+import axios from 'axios';
 
 
 
@@ -16,6 +17,18 @@ export default function AddOrder() {
     const[de, setDe] = useState();
     const[para, setPara] = useState();
 
+    const [checkSystem, setCheckSystem] = useState({
+        SYSA: false,
+        SYSB: false,
+        SYSC: false,
+    })
+    
+    const [checkSystemPara, setCheckSystemPara] = useState({
+        SYSA: false,
+        SYSB: false,
+        SYSC: false,
+    })
+
     const pushToOrders = (e) => {
         setOrders([...orders, value]);
         setValue('')
@@ -27,45 +40,98 @@ export default function AddOrder() {
         setSystemCToken(Cookies.get());
     }
 
-    const handleDe = (sys, e) => {
+    async function makeRequest() {
+        await axios.post('http://localhost:4000/sendOrderSale', {
+            authorizationCodeSYS01: de, 
+            authorizationCodeSYS02: para, 
+            numberSaleOrders: orders,
+        });
+    }
 
-        if(sys === "SYSA" && e.target.checked) {
-            console.log(de, 'aaaaaaaaa');
+
+    const checkIfThereIsAnyOtherBesidesMeChecked = (sys, obj) => {
+        for (const key in checkSystem) {
+            if(obj[key] && String(key) !== sys) {
+               return true; 
+            }
+        }
+        return false
+    }
+
+    const handleDe = (sys, e) => {
+        if(sys === "SYSA" && e.target.checked && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystem) === false) {
             setDe(systemAToken);
-        }else {
+            setCheckSystem((prev) => {
+                const x = {
+                    ...prev,
+                    SYSA: true
+                }
+                return x;
+            });
+        }else if (sys === "SYSA" && e.target.checked === false && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystem) === false) {
+            setCheckSystem((prev) => {
+                const x = {
+                    ...prev,
+                    SYSA: false
+                }
+                return x;
+            });
             setDe('');
         }
         
-        if(sys === "SYSB" && e.target.checked) {
+        if(sys === "SYSB" && e.target.checked && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystem) === false) {
             setDe(systemBToken);
-        }else {
+            setCheckSystem({...checkSystem, SYSB: true});
+        }else if (sys === "SYSB" && e.target.checked === false && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystem) === false) {
             setDe('');
+            setCheckSystem({...checkSystem, SYSB: false});
         }
         
-        
-        // if(sys === "SYSA") {
-        //     setDe(systemAToken);
-        // }
+        if(sys === "SYSC" && e.target.checked && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystem) === false) {
+            setDe(systemCToken);
+            setCheckSystem({...checkSystem, SYSC: true});
+        }else if (sys === "SYSC" && e.target.checked === false && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystem) === false) {
+            setDe('');
+            setCheckSystem({...checkSystem, SYSC: false});
+        }
     }
     
     const handlePara = (sys, e) => {
-        if(sys === "SYSA" && e.target.checked) {
-            console.log(para);
+        if(sys === "SYSA" && e.target.checked && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystemPara) === false) {
             setPara(systemAToken);
-        }else {
-            console.log('gone throuy');
+            setCheckSystemPara((prev) => {
+                const x = {
+                    ...prev,
+                    SYSA: true
+                }
+                return x;
+            });
+        }else if (sys === "SYSA" && e.target.checked === false && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystemPara) === false) {
+            setCheckSystemPara((prev) => {
+                const x = {
+                    ...prev,
+                    SYSA: false
+                }
+                return x;
+            });
             setPara('');
         }
         
-        if(sys === "SYSB" && e.target.checked) {
+        if(sys === "SYSB" && e.target.checked && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystemPara) === false) {
             setPara(systemBToken);
-        }else {
+            setCheckSystemPara({...checkSystemPara, SYSB: true});
+        }else if (sys === "SYSB" && e.target.checked === false && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystemPara) === false) {
             setPara('');
+            setCheckSystemPara({...checkSystemPara, SYSB: false});
         }
         
-        // if(sys === "SYSA") {
-        //     setDe(systemAToken);
-        // }
+        if(sys === "SYSC" && e.target.checked && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystemPara) === false) {
+            setPara(systemCToken);
+            setCheckSystemPara({...checkSystemPara, SYSC: true});
+        }else if (sys === "SYSC" && e.target.checked === false && checkIfThereIsAnyOtherBesidesMeChecked(sys, checkSystemPara) === false) {
+            setPara('');
+            setCheckSystemPara({...checkSystemPara, SYSC: false});
+        }
     }
 
     useEffect(() => {
@@ -78,9 +144,9 @@ export default function AddOrder() {
                 <div className="wraper">
                     <div className='orders-title'>DIGITE OS NUMEROS</div>
                     <div className="orders">
-                        {orders.map(x => {
+                        {orders.map((x, index) => {
                             return (
-                                <span>{x}</span>
+                                <span key={index}> {x}</span>
                             )
                         })}
                     </div>
@@ -98,11 +164,11 @@ export default function AddOrder() {
                             <div className='systems'>
                                 <div className='system-wraper'>
                                     <span className='system-icon'>SYSA</span>
-                                    <input onClick={(e) => handleDe('SYSA', e)} type="checkbox" />
+                                    <input onChange={(e) => handleDe('SYSA', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSA", checkSystem)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input onClick={(e) => handleDe('SYSB', e)} type="checkbox" />
+                                    <input onChange={(e) => handleDe('SYSB', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSB", checkSystem)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input onClick={(e) => handleDe('SYSC', e)} type="checkbox" />
+                                    <input onChange={(e) => handleDe('SYSC', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSC", checkSystem)} type="checkbox" />
                                 </div>
                             </div>
                         </div>
@@ -112,18 +178,18 @@ export default function AddOrder() {
                             <div className='systems'>
                                 <div className='system-wraper'>
                                     <span className='system-icon'>SYSA</span>
-                                    <input onClick={(e) => handlePara('SYSA', e)} type="checkbox" />
+                                    <input onChange={(e) => handlePara('SYSA', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSA", checkSystemPara)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input onClick={(e) => handlePara('SYSB', e)} type="checkbox" />
+                                    <input onChange={(e) => handlePara('SYSB', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSB", checkSystemPara)} type="checkbox" />
                                     <span className='system-icon'>SYSA</span>
-                                    <input onClick={(e) => handlePara('SYSC', e)} type="checkbox" />
+                                    <input onChange={(e) => handlePara('SYSC', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSC", checkSystemPara)} type="checkbox" />
                                 </div>
                             </div>
                         </div>
 
 
                     <div className="order-footer">
-                            <div className='order-btn' onClick={() => pushToOrders()}>ENVIAR</div>
+                            <div className='order-btn' onClick={() => makeRequest()}>ENVIAR</div>
                     </div>
                 </div>
             </div>

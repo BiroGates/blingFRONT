@@ -49,6 +49,10 @@ function Home() {
           <Card
           urlToAuth='https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id=ad83574954a5848ee8b715e56b835bdeabafdb72&state=4dadb5d5a6a5c51fa3cc2f4bd35e1872f' 
           systemName="SYSB" />
+          
+          <Card
+          urlToAuth='https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id=ad83574954a5848ee8b715e56b835bdeabafdb72&state=4dadb5d5a6a5c51fa3cc2f4bd35e1872f' 
+          systemName="SYSC" />
         </div>
         <div className='btn-layer'>
           {
