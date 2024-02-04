@@ -4,6 +4,12 @@ import './index.css';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+
+import icon_a from '../../assets/icons8-coração-50.png';
+import icon_b from '../../assets/icons8-ferramenta-64.png';
+import icon_c from '../../assets/icons8-pedra-64.png';
+
 
 function Home() {
   const [canGoToNextPage, setCanGoNextPage] = useState(false);
@@ -22,13 +28,18 @@ function Home() {
 
 
   useEffect(() => {
-    if (system && token) {
+    if(system && token) {
       setCookies();
-      toast.dark('🚀 Autenticação realizada com sucesso');
     }
 
-    if (Cookies.get('SYSA') && Cookies.get('SYSB')) {
+    if (Cookies.get('SYSA') && Cookies.get('SYSB') && Cookies.get('SYSC')) {
       setCanGoNextPage(true);
+    }else {
+      setCanGoNextPage(false);
+    }
+
+    if (canGoToNextPage) {
+      toast.dark("✅ Autenticações relizada com sucesso", { closeOnClick: true });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -43,21 +54,24 @@ function Home() {
         </div>
         <div className='cards'>
           <Card
-            urlToAuth='https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id=adbc37d2c8b943145a707dc9392a271cd8294b7b&state=78bfd79b1153c128c5672fa7551cccc8'
-            systemName="SYSA" />
+            urlToAuth={process.env.REACT_APP_SYSTEM_A_AUTH_URL}
+            systemName={process.env.REACT_APP_SYSTEM_A_NAME}
+            icon={icon_a}/>
           
           <Card
-          urlToAuth='https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id=ad83574954a5848ee8b715e56b835bdeabafdb72&state=4dadb5d5a6a5c51fa3cc2f4bd35e1872f' 
-          systemName="SYSB" />
+          urlToAuth={process.env.REACT_APP_SYSTEM_B_AUTH_URL} 
+          systemName={process.env.REACT_APP_SYSTEM_B_NAME} 
+          icon={icon_b}/>
           
           <Card
-          urlToAuth='https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id=ad83574954a5848ee8b715e56b835bdeabafdb72&state=4dadb5d5a6a5c51fa3cc2f4bd35e1872f' 
-          systemName="SYSC" />
+          urlToAuth={process.env.REACT_APP_SYSTEM_C_AUTH_URL}
+          systemName={process.env.REACT_APP_SYSTEM_C_NAME} 
+          icon={icon_c}/>
         </div>
         <div className='btn-layer'>
           {
             canGoToNextPage ? (
-              <div className='btn'>CONTINUAR</div>
+              <Link to="/addorder" className='btn'>CONTINUAR</Link>
             ) : (<div></div>)
           }
         </div>

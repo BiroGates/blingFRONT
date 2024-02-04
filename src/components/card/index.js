@@ -1,7 +1,6 @@
 import './index.css';
-import icon from '../../assets/icons8-coração-50.png';
 
-function Card({ systemName, urlToAuth }) {
+function Card({ systemName, urlToAuth, icon }) {
 
   const handleClick = () => {
     window.location.href = urlToAuth;
