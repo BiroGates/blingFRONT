@@ -155,7 +155,7 @@ export default function AddOrder() {
         <div className="order-main">
             <div className="upper-order">
                 <div className="wraper">
-                    <div className='orders-title'>DIGITE OS NUMEROS</div>
+                    <div className='orders-title'>DIGITE OS NUMEROS DOS PEDIDOS QUE DESEJA ADICIONAR</div>
                     <div className="orders">
                         {orders.map((x, index) => {
                             return (

@@ -50,7 +50,7 @@ function Home() {
       <div className='content'>
         <div className='title'>
           <span>Bem vindo</span>
-          <span>Você precisa se autentica em todos os serviços antes de prosseguir</span>
+          <span>Você precisa se autenticar em todos os serviços antes de prosseguir</span>
         </div>
         <div className='cards'>
           <Card
