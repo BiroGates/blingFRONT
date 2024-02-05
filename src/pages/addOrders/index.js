@@ -188,7 +188,7 @@ export default function AddOrder() {
                     </div>
 
                     <div className='row'>
-                        <div className='orders-title'>Enviar de:</div>
+                        <div className='orders-title'>Enviar para:</div>
                         <div className='systems'>
                             <div className='system-wraper'>
                                 <span className='system-icon'>{process.env.REACT_APP_SYSTEM_A_NAME}</span>
