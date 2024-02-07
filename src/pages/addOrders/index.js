@@ -43,7 +43,7 @@ export default function AddOrder() {
 
     async function makeRequest() {
         try {
-            toast.promise(axios.post('http://localhost:4000/sendOrderSale', {
+            toast.promise(axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`, {
                 authorizationCodeSYS01: de,
                 authorizationCodeSYS02: para,
                 numberSaleOrders: orders,
