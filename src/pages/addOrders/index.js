@@ -43,19 +43,18 @@ export default function AddOrder() {
 
     async function makeRequest() {
         try {
-            toast.promise(axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`, {
-                authorizationCodeSYS01: de,
-                authorizationCodeSYS02: para,
-                numberSaleOrders: orders,
-            }), {
-                pending: 'Enviando...',
-                success: 'Notas enviadas com sucesso 😊',
-                error: '❌ Algo deu errado!'
-            }, {
-                closeOnClick: true,
+            const promises = orders.map(async (item, index) => {
+                await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`, 
+                {
+                    authorizationCodeSYS01: de,
+                    authorizationCodeSYS02: para,
+                    numberSaleOrders: orders[index],
+                });
+
+            Promise.all(promises);
             });
-        } catch(e) {
-            console.log("Deu ruim");
+        } catch (e) {
+            toast.error("❌ Erro inesperado");
         }
 
 
