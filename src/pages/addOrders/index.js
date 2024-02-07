@@ -41,20 +41,25 @@ export default function AddOrder() {
         setSystemCToken(Cookies.get('SYSC'));
     }
 
+    // {
+    //     "data": {
+    //       "numeroAntigoDoPedido": 2011,
+    //       "numeroNovoDoPedido": 569
+    //     }
+    // }
+
     async function makeRequest() {
         try {
-            const promises = orders.map(async (item, index) => {
-                await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`, 
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`,
                 {
                     authorizationCodeSYS01: de,
                     authorizationCodeSYS02: para,
-                    numberSaleOrders: orders[index],
+                    numberSaleOrders: orders,
                 });
+            
 
-            });
-            Promise.all(promises);
         } catch (e) {
-            toast.error("❌ Erro inesperado");
+            toast.error("❌ Erro inesperado tente novamente");
         }
 
 
