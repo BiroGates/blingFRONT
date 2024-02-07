@@ -51,8 +51,8 @@ export default function AddOrder() {
                     numberSaleOrders: orders[index],
                 });
 
-            Promise.all(promises);
             });
+            Promise.all(promises);
         } catch (e) {
             toast.error("❌ Erro inesperado");
         }

@@ -64,6 +64,11 @@
 
 }
 
+.orders .span-block {
+    display: flex;
+    gap: 20px;
+}
+
 .order-footer {
     width: 100%;
 
