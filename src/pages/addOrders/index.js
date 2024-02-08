@@ -67,6 +67,7 @@ export default function AddOrder() {
             });
 
         } catch (e) {
+            console.log(e.message);
             toast.error("❌ Erro inesperado tente novamente");
         }
     }
