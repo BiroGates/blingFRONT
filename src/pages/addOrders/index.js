@@ -51,6 +51,7 @@ export default function AddOrder() {
 
     async function makeRequest() {
         try {
+            toast.dark("Enviando numeros...");
             const { data } = await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`,
                 {
                     authorizationCodeSYS01: de,
@@ -65,6 +66,7 @@ export default function AddOrder() {
                 }
                 setOrders(copyOrders);
             });
+            toast.dark("Numeros enviados com sucesso");
 
         } catch (e) {
             console.log(e.message);
