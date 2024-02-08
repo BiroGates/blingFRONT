@@ -31,7 +31,7 @@ export default function AddOrder() {
     })
 
     const pushToOrders = (e) => {
-        setOrders([...orders, value]);
+        setOrders([...orders, { status: null, value }]);
         setValue('')
     };
 
@@ -43,6 +43,7 @@ export default function AddOrder() {
 
     // {
     //     "data": {
+    //       "status": "SUCESSO" ou "FALHO"
     //       "numeroAntigoDoPedido": 2011,
     //       "numeroNovoDoPedido": 569
     //     }
@@ -50,19 +51,24 @@ export default function AddOrder() {
 
     async function makeRequest() {
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`,
+            const payload = await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`,
                 {
                     authorizationCodeSYS01: de,
                     authorizationCodeSYS02: para,
                     numberSaleOrders: orders,
                 });
-            
+
+            payload.forEach((item, index) => {
+                const copyOrders = orders;
+                if(item.numeroAntigo === orders[index].value) {
+                    copyOrders[index].status = item.status;
+                }
+                setOrders(copyOrders);
+            });
 
         } catch (e) {
             toast.error("❌ Erro inesperado tente novamente");
         }
-
-
     }
 
 
@@ -163,7 +169,9 @@ export default function AddOrder() {
                     <div className="orders">
                         {orders.map((x, index) => {
                             return (
-                                <span key={index}> {x}</span>
+                                <div className='wraper-span'>
+                                    <span key={index}> {x.value}</span> <span key={index}> {x.status}</span>
+                                </div>
                             )
                         })}
                     </div>
@@ -173,46 +181,46 @@ export default function AddOrder() {
                         <div className='order-btn' onClick={() => setOrders([])}>LIMPAR</div>
                     </div>
                 </div>
-            </div>
-            <div className="lower-order">
+                </div>
+                <div className="lower-order">
 
-                <div className="lower-wraper">
-                    <div className='row'>
-                        <div className='orders-title'>Enviar de:</div>
-                        <div className='systems'>
-                            <div className='system-wraper'>
-                                <span className='system-icon'>{process.env.REACT_APP_SYSTEM_A_NAME}</span>
-                                <input onChange={(e) => handleDe('SYSA', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSA", checkSystem)} type="checkbox" />
-                                <span className='system-icon'>{process.env.REACT_APP_SYSTEM_B_NAME}</span>
-                                <input onChange={(e) => handleDe('SYSB', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSB", checkSystem)} type="checkbox" />
-                                <span className='system-icon'>{process.env.REACT_APP_SYSTEM_C_NAME}</span>
-                                <input onChange={(e) => handleDe('SYSC', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSC", checkSystem)} type="checkbox" />
+                    <div className="lower-wraper">
+                        <div className='row'>
+                            <div className='orders-title'>Enviar de:</div>
+                            <div className='systems'>
+                                <div className='system-wraper'>
+                                    <span className='system-icon'>{process.env.REACT_APP_SYSTEM_A_NAME}</span>
+                                    <input onChange={(e) => handleDe('SYSA', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSA", checkSystem)} type="checkbox" />
+                                    <span className='system-icon'>{process.env.REACT_APP_SYSTEM_B_NAME}</span>
+                                    <input onChange={(e) => handleDe('SYSB', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSB", checkSystem)} type="checkbox" />
+                                    <span className='system-icon'>{process.env.REACT_APP_SYSTEM_C_NAME}</span>
+                                    <input onChange={(e) => handleDe('SYSC', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSC", checkSystem)} type="checkbox" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className='row'>
-                        <div className='orders-title'>Enviar para:</div>
-                        <div className='systems'>
-                            <div className='system-wraper'>
-                                <span className='system-icon'>{process.env.REACT_APP_SYSTEM_A_NAME}</span>
-                                <input onChange={(e) => handlePara('SYSA', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSA", checkSystemPara)} type="checkbox" />
-                                <span className='system-icon'>{process.env.REACT_APP_SYSTEM_B_NAME}</span>
-                                <input onChange={(e) => handlePara('SYSB', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSB", checkSystemPara)} type="checkbox" />
-                                <span className='system-icon'>{process.env.REACT_APP_SYSTEM_C_NAME}</span>
-                                <input onChange={(e) => handlePara('SYSC', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSC", checkSystemPara)} type="checkbox" />
+                        <div className='row'>
+                            <div className='orders-title'>Enviar para:</div>
+                            <div className='systems'>
+                                <div className='system-wraper'>
+                                    <span className='system-icon'>{process.env.REACT_APP_SYSTEM_A_NAME}</span>
+                                    <input onChange={(e) => handlePara('SYSA', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSA", checkSystemPara)} type="checkbox" />
+                                    <span className='system-icon'>{process.env.REACT_APP_SYSTEM_B_NAME}</span>
+                                    <input onChange={(e) => handlePara('SYSB', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSB", checkSystemPara)} type="checkbox" />
+                                    <span className='system-icon'>{process.env.REACT_APP_SYSTEM_C_NAME}</span>
+                                    <input onChange={(e) => handlePara('SYSC', e)} disabled={checkIfThereIsAnyOtherBesidesMeChecked("SYSC", checkSystemPara)} type="checkbox" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div className="order-footer">
-                        <div className='order-btn' onClick={() => makeRequest()}>ENVIAR</div>
+                        <div className="order-footer">
+                            <div className='order-btn' onClick={() => makeRequest()}>ENVIAR</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-    );
+            </div>
+            );
 
 }

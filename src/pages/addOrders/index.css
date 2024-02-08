@@ -64,6 +64,11 @@
 
 }
 
+.wraper-span {
+    display: flex;
+    gap: 20px;
+}
+
 .orders .span-block {
     display: flex;
     gap: 20px;
