@@ -64,6 +64,7 @@ export default function AddOrder() {
                 if(item.numeroAntigo === orders[index].value) {
                     copyOrders[index].status = item.status;
                 }
+                console.log(copyOrders);
                 setOrders(copyOrders);
             });
             toast.dark("Numeros enviados com sucesso");
