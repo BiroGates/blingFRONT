@@ -170,7 +170,7 @@ export default function AddOrder() {
 
     useEffect(() => {
         getSystemTokens()
-    }, []);
+    }, [orders]);
 
     return (
         <div className="order-main">
