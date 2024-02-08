@@ -59,7 +59,7 @@ export default function AddOrder() {
                     numberSaleOrders: orders,
                 });
             console.log(data);
-            data.map((item, index) => {
+            data.data.map((item, index) => {
                 const copyOrders = orders;
                 if(item.numeroAntigo === orders[index].value) {
                     copyOrders[index].status = item.status;
