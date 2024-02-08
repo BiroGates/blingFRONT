@@ -41,13 +41,20 @@ export default function AddOrder() {
         setSystemCToken(Cookies.get('SYSC'));
     }
 
-    // {
-    //     "data": {
-    //       "status": "SUCESSO" ou "FALHO"
-    //       "numeroAntigoDoPedido": 2011,
-    //       "numeroNovoDoPedido": 569
-    //     }
-    // }
+    //{
+    //    "data": [
+    //        {
+    //            "numeroAntigoDoPedido": 2010,
+    //            "numeroNovoDoPedido": 596,
+    //            "status": "Sucesso"
+    //        },
+    //        {
+    //            "numeroAntigoDoPedido": 2410,
+    //            "Erro": "O número de pedido informado não existe",
+    //            "status": "Erro na aplicação"
+    //        }
+    //    ]
+    //}
 
     async function makeRequest() {
         try {
@@ -61,7 +68,7 @@ export default function AddOrder() {
             console.log(data);
             data.data.map((item, index) => {
                 const copyOrders = orders;
-                if(item.numeroAntigo === orders[index].value) {
+                if(item.numeroAntigoDoPedido === orders[index].value) {
                     copyOrders[index].status = item.status;
                 }
                 console.log(copyOrders);
