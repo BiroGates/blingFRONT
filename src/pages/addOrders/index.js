@@ -58,7 +58,7 @@ export default function AddOrder() {
                     authorizationCodeSYS02: para,
                     numberSaleOrders: orders,
                 });
-
+            console.log(data);
             data.forEach((item, index) => {
                 const copyOrders = orders;
                 if(item.numeroAntigo === orders[index].value) {
