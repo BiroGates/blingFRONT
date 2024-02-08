@@ -170,8 +170,8 @@ export default function AddOrder() {
                     <div className="orders">
                         {orders.map((x, index) => {
                             return (
-                                <div className='wraper-span'>
-                                    <span key={index}> {x.value}</span> <span key={index}> {x.status}</span>
+                                <div key={index} className='wraper-span'>
+                                    <span> {x.value}</span> <span> {x.status}</span>
                                 </div>
                             )
                         })}
