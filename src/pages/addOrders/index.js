@@ -51,14 +51,14 @@ export default function AddOrder() {
 
     async function makeRequest() {
         try {
-            const payload = await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`,
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}sendOrderSale`,
                 {
                     authorizationCodeSYS01: de,
                     authorizationCodeSYS02: para,
                     numberSaleOrders: orders,
                 });
 
-            payload.forEach((item, index) => {
+            data.forEach((item, index) => {
                 const copyOrders = orders;
                 if(item.numeroAntigo === orders[index].value) {
                     copyOrders[index].status = item.status;
