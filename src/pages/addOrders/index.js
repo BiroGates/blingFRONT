@@ -63,7 +63,7 @@ export default function AddOrder() {
         try {
 
             toast.dark("Enviando numeros...");
-            const { data } = await axios.post(process.env.REACT_APP_API_MOCK === true ? `${process.env.REACT_APP_API_URL_MOCK}` : `${process.env.REACT_APP_API_URL}sendOrderSale`,
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL_MOCK}`,
                 {
                     authorizationCodeSYS01: de,
                     authorizationCodeSYS02: para,
@@ -200,7 +200,7 @@ export default function AddOrder() {
                         {orders.map((x, index) => {
                             return (
                                 <div key={index} className='wraper-span'>
-                                    <span> {x.value}</span> <span> {x.status}</span>
+                                    <span> {x.value}</span> <span> {x.erro ?? x.status }</span>
                                 </div>
                             )
                         })}
