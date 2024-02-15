@@ -63,7 +63,7 @@ export default function AddOrder() {
         try {
 
             toast.dark("Enviando numeros...");
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL_MOCK}`,
+            const { data } = await axios.post(process.env.REACT_APP_API_MOCK === true ? `${process.env.REACT_APP_API_URL_MOCK}` : `${process.env.REACT_APP_API_URL}sendOrderSale`,
                 {
                     authorizationCodeSYS01: de,
                     authorizationCodeSYS02: para,
