@@ -34,7 +34,7 @@ export default function AddOrder() {
     })
 
     const pushToOrders = (e) => {
-        setOrders([...orders, { status: null, value }]);
+        setOrders([...orders, { status: null, erro: null, value }]);
         setValue('')
     };
 
@@ -77,6 +77,9 @@ export default function AddOrder() {
                 const copyOrders = orders;
                 if (item.numeroAntigoDoPedido === orders[index].value) {
                     copyOrders[index].status = item.status;
+                }
+                if (item.Erro) {
+                    copyOrders[index].erro = item.Erro;
                 }
                 console.log(copyOrders);
                 setOrders(copyOrders);

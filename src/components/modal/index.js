@@ -52,7 +52,7 @@ export default function Modal({ succes, failures, handleClose }) {
                                     </span>
                                     
                                     <span>
-                                        {n.status}
+                                        {n.erro}
                                     </span>
                                 </div>
                                 ) 
